@@ -1,10 +1,10 @@
 {
     "metadata_config": {
-        "databaseType": "Postgresql",
-        "host": "192.168.0.112",
-        "port": 5432,
-        "username": "postgres",
-        "psswrd": "Z0FBQUFBQmxlZjZhYUhiWVIzS1lxMEZ3ZDdTS1owMnRMLUxKdF9iaTNhbHN3VUpLc1BEOEdEaU15YURNSklLcjcwV1RQbmg3ZThLVzlnaWxOdmNQOTNuZ0kySElianc1cHc9PQ==",
-        "databaseName": "testing_db"
+        "databaseType": "",
+        "host": "",
+        "port": "",
+        "username": "",
+        "psswrd": "",
+        "databaseName": ""
     }
 }
