@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from sqlalchemy import create_engine
-from fastapi import HTTPException
+from fastapi import HTTPException,status
 from pathlib import Path
 import base64
 import os
@@ -37,12 +37,15 @@ async def create_tables(db_details:MetadataTable_PostgreSQL):
     - Psswrd : Database psswrd.
     - DatabaseName : Database name.
     """
-    SQLALCHEMY_DATABASE_URL = db_details.databaseType.lower() + "://" + db_details.username.lower() + ":" + db_details.psswrd + "@" + db_details.host.lower() + ":" + str(db_details.port) + "/" + db_details.databaseName.lower()
-    engine = create_engine(SQLALCHEMY_DATABASE_URL,pool_size=20, max_overflow=0)
-    engine.connect()
-    if engine:
-        Base.metadata.create_all(engine)
+    
+    try:
+        SQLALCHEMY_DATABASE_URL = db_details.databaseType.lower() + "://" + db_details.username.lower() + ":" + db_details.psswrd + "@" + db_details.host.lower() + ":" + str(db_details.port) + "/" + db_details.databaseName.lower()
+        
+        engine = create_engine(SQLALCHEMY_DATABASE_URL,pool_size=20, max_overflow=0)
         engine.connect()
+        
+        Base.metadata.create_all(engine)
+        
         enc_data = json_encrypt(str(db_details.psswrd))
         enc_data = base64.b64encode(enc_data).decode('utf-8')
         metadata_config = {
@@ -56,10 +59,11 @@ async def create_tables(db_details:MetadataTable_PostgreSQL):
                     
         await metadata_configuration(metadata_config)
         return {"detail": {"message": "Tables created successfully.", "statusCode": 201, "errorCode": None}} 
-    else:
-        raise HTTPException(status_code=statuscode,detail={"message":"Creation of tabel failed","statusCode": 422,"errorCode": errorcode})
-
-    
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"message": f"Creation of tables failed: {str(e)}", "statusCode": 503, "errorCode": "errorcode"}
+        )
 
 
 
