@@ -34,7 +34,6 @@ async def register_user(userinfo : User_Registration = Depends(),profile_picture
         db.refresh(user_details)
         
         user_id = db.query(User.id).filter(User.Email==userinfo.email).first()
-        print(user_id.id)
         
         cwd = Path(__file__).parents[2]
         image_folder_path = cwd/'images'/ str(profile_picture.filename)
