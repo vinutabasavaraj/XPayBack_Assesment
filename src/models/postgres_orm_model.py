@@ -1,5 +1,5 @@
 from sqlalchemy import (Column,BigInteger,
-                        LargeBinary, String, Table,Integer)
+                        LargeBinary, String, Table,Integer,ForeignKey)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -17,13 +17,15 @@ class User(Base):
     Phone = Column(BigInteger)
 
 
-# class Profile(Base):
-#     __tablename__ = 'profile'
+class Profile(Base):
+    __tablename__ = 'profile'
 
-#     id = Column(Integer, primary_key=True)
-#     profile_picture = Column(LargeBinary)
-#     user_id = Column(Integer, ForeignKey("users.id"))
+    id = Column(Integer, primary_key=True)
+    profile_picture = Column(String(450))
+    profile_picture_name = Column(String(150))
+    user_id = Column(Integer, ForeignKey("user.id"))
+    extension = Column(String(30))
     
-#     usermaster = relationship('User', primaryjoin='Profile.user_id == User.id')
-    
+    user = relationship('User', primaryjoin='Profile.user_id == User.id')
+
 

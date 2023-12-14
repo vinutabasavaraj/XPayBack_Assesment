@@ -15,6 +15,8 @@ router=APIRouter(tags=["CreateTable"])
 cwd = Path(__file__).parents[1]
 filepath = cwd/'common'/'metadata_info.json'
 
+
+
 async def metadata_configuration(new_data):
     with open(filepath,'r+',encoding='utf-8') as file:
         file_data = json.load(file)
